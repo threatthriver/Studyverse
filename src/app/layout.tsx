@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} antialiased`}>
-      <body>
+    <html lang="en" className={`${GeistSans.variable} antialiased`} suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true}>
         <Providers>
           {children}
           <Toaster />
