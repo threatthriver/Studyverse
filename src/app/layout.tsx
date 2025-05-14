@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { Providers } from '@/components/Providers';
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from '@/contexts/AuthContext';
 
 export const metadata: Metadata = {
   title: 'Studyverse',
@@ -18,8 +19,10 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} antialiased dark`} suppressHydrationWarning={true}>
       <body suppressHydrationWarning={true}>
         <Providers>
-          {children}
-          <Toaster />
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </Providers>
       </body>
     </html>

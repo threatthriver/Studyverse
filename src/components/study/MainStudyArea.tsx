@@ -1,20 +1,41 @@
 
+"use client";
+
 import Image from "next/image";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useEffect, useState } from "react";
 
 export default function MainStudyArea() {
+  const { currentTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Handle hydration mismatch by only showing the themed content after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Show a simple placeholder during SSR/initial load
+    return (
+      <div className="flex-grow relative overflow-hidden bg-neutral-800">
+        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 pointer-events-none"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-grow relative overflow-hidden">
       <Image
-        src="https://placehold.co/1920x1080/D6C9BE/4A3F35.png?text=Study+Desk+Notes" // Placeholder for study desk
-        alt="Study environment background - a desk with notes and a laptop"
-        layout="fill"
-        objectFit="cover"
-        data-ai-hint="study desk notes"
+        src={currentTheme.backgroundImage}
+        alt={`${currentTheme.label} study environment`}
+        fill
+        style={{ objectFit: "cover" }}
+        data-ai-hint={currentTheme.dataAiHint}
         priority
-        className="opacity-90" 
+        className="opacity-90 transition-all duration-1000 ease-in-out"
       />
-      {/* Vignette or overlay for better text readability on top if needed */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/5 via-transparent to-black/15 pointer-events-none"></div>
+      {/* Vignette or overlay for better text readability on top */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/20 pointer-events-none"></div>
       {/* RoomTitleBar and MediaControlsBar will be placed by the parent layout */}
     </div>
   );

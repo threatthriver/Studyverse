@@ -1,11 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mic, MicOff, Video, VideoOff, ScreenShare, PhoneMissed, MoreHorizontal, Volume2, VolumeX } from "lucide-react";
+import { Mic, MicOff, Video, VideoOff, ScreenShare, PhoneMissed, MoreHorizontal, Volume2, VolumeX, Music2, CloudRain } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface MediaControlsBarProps {
   userName: string;
@@ -13,9 +14,30 @@ interface MediaControlsBarProps {
 }
 
 export default function MediaControlsBar({ userName, userStatus }: MediaControlsBarProps) {
+  const { isMusicPlaying, toggleMusic, isRainPlaying, toggleRain } = useTheme();
   const [isMuted, setIsMuted] = useState(false);
   const [isCamOff, setIsCamOff] = useState(false);
-  const [isSoundMuted, setIsSoundMuted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 flex items-center justify-between gap-3 bg-card/70 backdrop-blur-md p-2.5 rounded-full shadow-lg min-w-[300px] max-w-fit">
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-full bg-primary/20"></div>
+          <div className="w-24 h-4 bg-muted rounded"></div>
+        </div>
+        <div className="flex items-center gap-1.5">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="h-8 w-8 rounded-full bg-muted"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -27,15 +49,36 @@ export default function MediaControlsBar({ userName, userStatus }: MediaControls
           </Avatar>
           <span className="text-xs text-card-foreground whitespace-nowrap">{userStatus}</span>
         </div>
-        
+
         <div className="flex items-center gap-1.5">
+          {/* Music toggle button */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => setIsSoundMuted(!isSoundMuted)} className="rounded-full h-8 w-8 text-card-foreground hover:bg-accent/20">
-                {isSoundMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              <Button
+                variant={isMusicPlaying ? "default" : "ghost"}
+                size="icon"
+                onClick={toggleMusic}
+                className={`rounded-full h-8 w-8 ${isMusicPlaying ? 'bg-primary text-primary-foreground' : 'text-card-foreground hover:bg-accent/20'}`}
+              >
+                <Music2 className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="top"><p>{isSoundMuted ? "Unmute Sound" : "Mute Sound"}</p></TooltipContent>
+            <TooltipContent side="top"><p>{isMusicPlaying ? "Stop Music" : "Play LoFi Music"}</p></TooltipContent>
+          </Tooltip>
+
+          {/* Rain sound toggle button */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={isRainPlaying ? "default" : "ghost"}
+                size="icon"
+                onClick={toggleRain}
+                className={`rounded-full h-8 w-8 ${isRainPlaying ? 'bg-primary text-primary-foreground' : 'text-card-foreground hover:bg-accent/20'}`}
+              >
+                <CloudRain className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top"><p>{isRainPlaying ? "Stop Rain Sound" : "Play Rain Sound"}</p></TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -55,7 +98,7 @@ export default function MediaControlsBar({ userName, userStatus }: MediaControls
             </TooltipTrigger>
             <TooltipContent side="top"><p>Share Screen</p></TooltipContent>
           </Tooltip>
-          
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={() => setIsMuted(!isMuted)} className="rounded-full h-8 w-8 text-card-foreground hover:bg-accent/20">
