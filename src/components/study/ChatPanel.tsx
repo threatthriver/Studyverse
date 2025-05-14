@@ -41,34 +41,31 @@ export default function ChatPanel() {
     setCurrentUser({ name: userName, avatarSeed: userName.substring(0,2).toUpperCase() });
 
     if (typeof window !== "undefined") {
-        const savedMessages = localStorage.getItem("studyChatMessagesNew"); // Use new key
+        const savedMessages = localStorage.getItem("studyChatMessagesNew"); 
         if (savedMessages) {
             setMessages(JSON.parse(savedMessages).map((m: any) => ({...m, timestamp: new Date(m.timestamp)})));
         } else {
              setMessages([
               { id: "1", user: "Vivian", avatarSeed: "VI", text: "@Vivian", timestamp: new Date(Date.now() - 60000 * 10), isOwn: false },
               { id: "2", user: "John", avatarSeed: "JO", text: "John joined the room. Say hi!", timestamp: new Date(Date.now() - 60000 * 8), isOwn: false },
-              { id: "3", user: currentUser?.name || "Kei", avatarSeed: currentUser?.avatarSeed || "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 7), isOwn: true },
+              { id: "3", user: "Kei", avatarSeed: "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 7), isOwn: true },
               { id: "4", user: "Gecko8209", avatarSeed: "G8", text: "Gecko8209 joined the room. Say hi!", timestamp: new Date(Date.now() - 60000 * 5), isOwn: false },
-              { id: "5", user: currentUser?.name || "Kei", avatarSeed: currentUser?.avatarSeed || "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 4), isOwn: true },
+              { id: "5", user: "Kei", avatarSeed: "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 4), isOwn: true },
               { id: "6", user: "Gecko8209", avatarSeed: "G8", text: "Hi all!", timestamp: new Date(Date.now() - 60000 * 3), isOwn: false },
-              { id: "7", user: currentUser?.name || "Kei", avatarSeed: currentUser?.avatarSeed || "KE", text: "good luck, gecko!", timestamp: new Date(Date.now() - 60000 * 2), isOwn: true },
+              { id: "7", user: "Kei", avatarSeed: "KE", text: "good luck, gecko!", timestamp: new Date(Date.now() - 60000 * 2), isOwn: true },
               { id: "8", user: "Amyrah_Odette (Anna)", avatarSeed: "AO", text: "Amyrah_Odette (Anna) joined the room. Say hi!", timestamp: new Date(Date.now() - 60000 * 1.5), isOwn: false },
-              { id: "9", user: currentUser?.name || "Kei", avatarSeed: currentUser?.avatarSeed || "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 1), isOwn: true },
+              { id: "9", user: "Kei", avatarSeed: "KE", text: "Welcome!", timestamp: new Date(Date.now() - 60000 * 1), isOwn: true },
               { id: "10", user: "Amyrah_Odette (Anna)", avatarSeed: "AO", text: "Hey!", timestamp: new Date(Date.now() - 60000 * 0.5), isOwn: false },
               { id: "11", user: "girlocky", avatarSeed: "GI", text: "Hey!", timestamp: new Date(Date.now() - 60000 * 0.2), isOwn: false },
-
             ]);
         }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted]); // Add currentUser to dep array if it's truly dynamic from props/context
+  }, []); 
 
    useEffect(() => {
     if (mounted && typeof window !== "undefined") {
       localStorage.setItem("studyChatMessagesNew", JSON.stringify(messages));
     }
-    // Auto scroll to bottom
     if (scrollAreaRef.current) {
         const viewport = scrollAreaRef.current.querySelector('div[data-radix-scroll-area-viewport]');
         if (viewport) viewport.scrollTop = viewport.scrollHeight;
@@ -114,16 +111,29 @@ export default function ChatPanel() {
   }
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0}>
     <Card className="bg-card/80 backdrop-blur-sm shadow-lg flex-grow flex flex-col min-h-[300px] max-h-[400px] md:max-h-[450px]">
       <CardHeader className="p-3 flex flex-row items-center justify-between">
-        <CardTitle className="text-sm font-semibold text-primary flex items-center cursor-pointer hover:opacity-80">
-            Chat <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
-            <span className="ml-1.5 text-xs bg-destructive/80 text-destructive-foreground rounded-full px-1.5 py-0.5">99+</span>
-        </CardTitle>
         <Tooltip>
             <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-6 w-6">
+                <CardTitle 
+                    className="text-sm font-semibold text-primary flex items-center cursor-pointer hover:opacity-80"
+                    onClick={() => console.log("Chat panel options/toggle clicked")}
+                >
+                    Chat <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+                    <span className="ml-1.5 text-xs bg-destructive/80 text-destructive-foreground rounded-full px-1.5 py-0.5">99+</span>
+                </CardTitle>
+            </TooltipTrigger>
+            <TooltipContent side="top"><p>Chat Options / Toggle</p></TooltipContent>
+        </Tooltip>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-6 w-6"
+                    onClick={() => console.log("Chat settings clicked")}
+                >
                      <MoreVertical className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                 </Button>
             </TooltipTrigger>
@@ -149,8 +159,8 @@ export default function ChatPanel() {
               </div>
                {msg.isOwn && (
                 <Avatar className="w-6 h-6 self-start mt-1">
-                 <AvatarImage src={`https://placehold.co/40x40/3498db/FFFFFF.png?text=${msg.avatarSeed}`} alt={msg.user} data-ai-hint="avatar person" />
-                  <AvatarFallback>{msg.avatarSeed}</AvatarFallback>
+                 <AvatarImage src={`https://placehold.co/40x40/3498db/FFFFFF.png?text=${currentUser?.avatarSeed || 'ME'}`} alt={msg.user} data-ai-hint="avatar person" />
+                  <AvatarFallback>{currentUser?.avatarSeed || 'ME'}</AvatarFallback>
                 </Avatar>
               )}
             </div>
@@ -158,9 +168,14 @@ export default function ChatPanel() {
         </ScrollArea>
         <div className="flex items-center gap-1.5 pt-1.5 border-t border-border/20">
           {quickReplies.map(reply => (
-            <Button key={reply} variant="outline" size="sm" className="text-xs h-7 px-2.5 bg-background/40 hover:bg-accent/50" onClick={() => handleQuickReply(reply)}>
-              {reply}
-            </Button>
+            <Tooltip key={reply}>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" size="sm" className="text-xs h-7 px-2.5 bg-background/40 hover:bg-accent/50" onClick={() => handleQuickReply(reply)}>
+                        {reply}
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom"><p>Send: "{reply}"</p></TooltipContent>
+            </Tooltip>
           ))}
         </div>
         <form onSubmit={handleSendMessage} className="flex items-center gap-2 pt-1.5">
@@ -174,7 +189,13 @@ export default function ChatPanel() {
           />
           <Tooltip>
             <TooltipTrigger asChild>
-                <Button type="button" variant="ghost" size="icon" className="h-9 w-9 shrink-0 text-muted-foreground hover:text-primary">
+                <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-9 w-9 shrink-0 text-muted-foreground hover:text-primary"
+                    onClick={() => console.log("Emoji picker clicked")}
+                >
                     <SmilePlus className="h-4.5 w-4.5" />
                     <span className="sr-only">Add emoji</span>
                 </Button>

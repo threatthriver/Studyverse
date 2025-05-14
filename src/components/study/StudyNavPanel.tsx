@@ -4,7 +4,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Settings, UserPlus } from "lucide-react"; // Assuming Plus is for inviting more people
+import { Settings, UserPlus } from "lucide-react"; 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const participants = [
@@ -13,10 +13,10 @@ const participants = [
   { name: "Alex", seed: "AL", online: true, hint: "person headphones" },
   { name: "예수", seed: "예", online: false, hint: "korean student" }, // Korean name
   { name: "Chloe", seed: "CH", online: true, hint: "girl smiling" },
-  { name: "Kenji", seed: "KJ", online: true, hint: "anime character" }, // Placeholder for drawn avatar
+  { name: "Kenji", seed: "KJ", online: true, hint: "anime character" }, 
   { name: "Omar", seed: "OM", online: true, hint: "man beard" },
   { name: "Sofia", seed: "SO", online: false, hint: "woman curly_hair" },
-  { name: "Sam", seed: "SA", online: true, hint: "alien cute" }, // Placeholder for drawn avatar
+  { name: "Sam", seed: "SA", online: true, hint: "alien cute" }, 
 ];
 
 export default function StudyNavPanel() {
@@ -27,20 +27,23 @@ export default function StudyNavPanel() {
           <div className="flex flex-col items-center gap-3 px-2">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all ring-2 ring-green-500"> {/* Current User Highlight? */}
+                <Avatar 
+                  className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all ring-2 ring-green-500"
+                  onClick={() => console.log("My avatar clicked")}
+                > 
                   <AvatarImage src="https://placehold.co/60x60/7E57C2/FFFFFF.png?text=ME" alt="My Avatar" data-ai-hint="avatar person" />
                   <AvatarFallback>ME</AvatarFallback>
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent side="right">
-                <p>You</p>
+                <p>You (Kei)</p>
               </TooltipContent>
             </Tooltip>
 
             {participants.map((p, index) => (
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
-                  <div className="relative">
+                  <div className="relative" onClick={() => console.log(`Participant ${p.name} clicked`)}>
                     <Avatar className="h-12 w-12 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
                       <AvatarImage src={`https://placehold.co/60x60/${p.online ? '4CAF50' : '9E9E9E'}/FFFFFF.png?text=${p.seed}`} alt={p.name} data-ai-hint={p.hint}/>
                       <AvatarFallback>{p.seed}</AvatarFallback>
@@ -61,7 +64,12 @@ export default function StudyNavPanel() {
             
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full h-12 w-12 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border-2 border-dashed border-sidebar-border/50">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="rounded-full h-12 w-12 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border-2 border-dashed border-sidebar-border/50"
+                  onClick={() => console.log("Invite people button clicked")}
+                >
                   <UserPlus className="h-6 w-6" />
                 </Button>
               </TooltipTrigger>
@@ -75,7 +83,12 @@ export default function StudyNavPanel() {
         <div className="flex flex-col items-center gap-3 mt-auto pt-4">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="rounded-full h-10 w-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                onClick={() => console.log("Settings button clicked")}
+              >
                 <Settings className="h-5 w-5" />
               </Button>
             </TooltipTrigger>
