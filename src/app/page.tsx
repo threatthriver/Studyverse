@@ -1,25 +1,15 @@
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
-import HistorySection from "@/components/landing/HistorySection";
-import RelaunchSection from "@/components/landing/RelaunchSection";
-import AlternativesSection from "@/components/landing/AlternativesSection";
-import GettingStartedSection from "@/components/landing/GettingStartedSection";
-import CtaSection from "@/components/landing/CtaSection";
-import Footer from "@/components/landing/Footer";
+import FloatingChatButton from "@/components/landing/FloatingChatButton";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-background font-sans">
+    <div className="flex flex-col min-h-screen bg-background text-foreground font-sans antialiased">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow flex items-center"> {/* Added flex items-center for vertical centering of HeroSection content */}
         <HeroSection />
-        <HistorySection />
-        <RelaunchSection />
-        <AlternativesSection />
-        <GettingStartedSection />
-        <CtaSection />
       </main>
-      <Footer />
+      <FloatingChatButton />
     </div>
   );
 }
