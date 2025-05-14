@@ -40,38 +40,38 @@
   }
 
   .dark {
-    --background: 250 50% 10%; /* Dark Purple */
-    --foreground: 240 10% 93%; /* Off-white */
-    --card: 250 40% 13%; /* Slightly lighter dark purple */
-    --card-foreground: 240 10% 93%;
-    --popover: 250 40% 13%;
-    --popover-foreground: 240 10% 93%;
-    --primary: 240 70% 65%; /* Vibrant Blue for gradient start */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 250 30% 22%; /* Darker shade for secondary */
-    --secondary-foreground: 240 10% 88%;
-    --muted: 250 30% 18%; /* Darker muted */
-    --muted-foreground: 240 10% 65%; /* Greyer white */
-    --accent: 275 70% 60%; /* Vibrant Purple for gradient end */
-    --accent-foreground: 0 0% 100%; /* White */
+    --background: 220 30% 10%; /* Deep Blue-Black */
+    --foreground: 210 20% 95%; /* Off-white */
+    --card: 220 28% 13%;    /* Slightly Lighter Deep Blue-Black */
+    --card-foreground: 210 20% 95%;
+    --popover: 220 28% 13%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 170 60% 50%;   /* Teal/Green */
+    --primary-foreground: 210 40% 98%; /* Off-white / Light gray for text on primary */
+    --secondary: 220 25% 22%; /* Darker shade for secondary elements */
+    --secondary-foreground: 210 20% 88%;
+    --muted: 220 25% 18%;    /* Darker muted */
+    --muted-foreground: 210 20% 65%; /* Greyer white */
+    --accent: 170 50% 40%;     /* Darker Teal/Green */
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 250 30% 25%; /* Subtle border */
-    --input: 250 30% 25%;
-    --ring: 240 70% 65%; /* Primary color for rings */
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 250 50% 10%;
-    --sidebar-foreground: 240 10% 93%;
-    --sidebar-primary: 240 70% 65%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 275 70% 60%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 250 30% 25%;
-    --sidebar-ring: 240 70% 65%;
+    --border: 220 30% 25%;    /* Subtle border */
+    --input: 220 30% 25%;
+    --ring: 170 60% 50%;      /* Teal/Green for rings */
+    --chart-1: 170 70% 50%;
+    --chart-2: 190 60% 45%;
+    --chart-3: 210 80% 55%;
+    --chart-4: 150 65% 60%;
+    --chart-5: 180 75% 55%;
+    --sidebar-background: 220 30% 8%; /* Even darker for dedicated sidebars like study nav */
+    --sidebar-foreground: 210 20% 93%;
+    --sidebar-primary: 170 60% 50%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 170 50% 40%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 30% 20%;
+    --sidebar-ring: 170 60% 50%;
   }
 }
 

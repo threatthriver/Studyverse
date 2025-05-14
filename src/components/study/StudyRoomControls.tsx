@@ -1,5 +1,10 @@
 "use client";
 
+// This component is currently not used in the new study page layout.
+// Its functionality (theme/sound selection) might be integrated elsewhere
+// (e.g., StudyNavPanel or StudyHeader) if needed in the future.
+// For now, it's kept in case parts of its logic are useful later.
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
@@ -11,7 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Library, Coffee, Wind, Waves, Volume2, VolumeX, Sun, Moon, Users as LucideUsers, MessageSquare as LucideMessageSquare, CloudRain as LucideCloudRain, BookOpenCheck as LucideBookOpenCheck } from "lucide-react";
+import { Library, Coffee, Wind, Volume2, VolumeX, Sun, Moon, Users as LucideUsers, MessageSquare as LucideMessageSquare, CloudRain as LucideCloudRain, BookOpenCheck as LucideBookOpenCheck } from "lucide-react";
+
+// Aliasing imported icons to avoid naming conflicts and for clarity
+const BookOpenCheckIcon = LucideBookOpenCheck; 
+const UsersIcon = LucideUsers; 
+const MessageSquareIcon = LucideMessageSquare;
+const CloudRainIcon = LucideCloudRain;
+
 
 type Theme = "library" | "cafe" | "minimalist" | "custom";
 interface ThemeOption {
@@ -29,12 +41,6 @@ interface SoundOption {
   // file: string; // Path to sound file, for future implementation
 }
 
-// Dummy icons for sounds - moved before themes definition
-const BookOpenCheck = LucideBookOpenCheck; 
-const Users = LucideUsers; 
-const MessageSquare = LucideMessageSquare;
-const CloudRain = LucideCloudRain;
-
 
 const themes: ThemeOption[] = [
   {
@@ -44,8 +50,8 @@ const themes: ThemeOption[] = [
     backgroundImage: "https://placehold.co/1200x300/8D6E63/FFFFFF.png?text=Library+Background",
     dataAiHint: "library bookshelf",
     ambientSounds: [
-      { id: "pages", name: "Page Turning", icon: <BookOpenCheck className="mr-2 h-4 w-4" /> },
-      { id: "whispers", name: "Soft Whispers", icon: <Users className="mr-2 h-4 w-4" /> },
+      { id: "pages", name: "Page Turning", icon: <BookOpenCheckIcon className="mr-2 h-4 w-4" /> },
+      { id: "whispers", name: "Soft Whispers", icon: <UsersIcon className="mr-2 h-4 w-4" /> },
     ],
   },
   {
@@ -55,7 +61,7 @@ const themes: ThemeOption[] = [
     backgroundImage: "https://placehold.co/1200x300/A1887F/FFFFFF.png?text=Cafe+Background",
     dataAiHint: "cafe interior",
     ambientSounds: [
-      { id: "chatter", name: "Cafe Chatter", icon: <MessageSquare className="mr-2 h-4 w-4" /> },
+      { id: "chatter", name: "Cafe Chatter", icon: <MessageSquareIcon className="mr-2 h-4 w-4" /> },
       { id: "coffee", name: "Coffee Machine", icon: <Coffee className="mr-2 h-4 w-4" /> },
     ],
   },
@@ -67,7 +73,7 @@ const themes: ThemeOption[] = [
     dataAiHint: "minimalist workspace",
     ambientSounds: [
       { id: "wind", name: "Gentle Wind", icon: <Wind className="mr-2 h-4 w-4" /> },
-      { id: "rain", name: "Light Rain", icon: <CloudRain className="mr-2 h-4 w-4" /> },
+      { id: "rain", name: "Light Rain", icon: <CloudRainIcon className="mr-2 h-4 w-4" /> },
     ],
   },
 ];
@@ -86,33 +92,29 @@ export default function StudyRoomControls() {
     if (theme) {
       setCurrentBackground(theme.backgroundImage);
       setCurrentAiHint(theme.dataAiHint);
-      // In a real app, you might change CSS variables or apply classes to body/html for theme
       // document.documentElement.style.setProperty('--room-background-image', `url(${theme.backgroundImage})`);
     }
   }, [selectedTheme]);
 
   const handleThemeChange = (value: string) => {
     setSelectedTheme(value as Theme);
-    setPlayingSound(null); // Stop sound when theme changes
+    setPlayingSound(null); 
   };
 
   const toggleSound = (soundId: string) => {
     if (playingSound === soundId) {
       setPlayingSound(null);
       console.log(`Stopped sound: ${soundId}`);
-      // Logic to stop sound
     } else {
       setPlayingSound(soundId);
       console.log(`Playing sound: ${soundId}`);
-      // Logic to play sound
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 bg-card rounded-lg shadow-xl">
       <div 
         className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden shadow-inner bg-cover bg-center transition-all duration-500 ease-in-out"
-        // style={{ backgroundImage: `url(${currentBackground})`}} // Alternative to Image for CSS background
       >
         <Image
             src={currentBackground}
@@ -121,7 +123,7 @@ export default function StudyRoomControls() {
             objectFit="cover"
             data-ai-hint={currentAiHint}
             className="transition-opacity duration-500 ease-in-out"
-            key={currentBackground} // Force re-render on change for transition
+            key={currentBackground}
           />
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <h2 className="text-3xl font-bold text-white drop-shadow-lg">{currentThemeData.label}</h2>
@@ -169,6 +171,7 @@ export default function StudyRoomControls() {
           <p className="text-muted-foreground text-sm">No ambient sounds for this theme.</p>
         )}
       </div>
+       <p className="text-xs text-muted-foreground text-center pt-4">Note: Full audio functionality requires backend integration for sound streaming.</p>
     </div>
   );
 }
