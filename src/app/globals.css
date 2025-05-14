@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,61 +17,76 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    --accent: 210 40% 96.1%; /* More teal/greenish for dark theme accent */
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 222.2 84% 4.9%; /* Accent color for rings */
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222.2 84% 4.9%;
-    --sidebar-primary: 222.2 47.4% 11.2%;
+
+    /* Sidebar specific, but can be aliased if design is consistent */
+    --sidebar-background: 220 25% 12%; /* Darker, slightly brown/grey for sidebars */
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 170 60% 50%;   /* Teal/Green for sidebar primary elements */
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 210 40% 96.1%;
-    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-ring: 222.2 84% 4.9%;
+    --sidebar-accent: 220 20% 20%; /* Darker accent for hover states in sidebar */
+    --sidebar-accent-foreground: 170 50% 60%; /* Brighter teal/green text on accent hover */
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 170 60% 50%;
   }
 
   .dark {
-    --background: 220 30% 10%; /* Deep Blue-Black */
-    --foreground: 210 20% 95%; /* Off-white */
-    --card: 220 28% 13%;    /* Slightly Lighter Deep Blue-Black */
-    --card-foreground: 210 20% 95%;
-    --popover: 220 28% 13%;
+    --background: 220 30% 10%; /* Deep Blue-Black for main app background */
+    --foreground: 210 20% 95%; /* Off-white for text */
+    
+    /* Cards in sidebars and control bars - slightly lighter than main, with a hint of brown/desaturated color */
+    --card: 220 15% 18%; /* Dark, desaturated blue-grey, leaning towards brown */
+    --card-foreground: 210 20% 90%;
+
+    --popover: 220 15% 15%; /* Darker popovers */
     --popover-foreground: 210 20% 95%;
-    --primary: 170 60% 50%;   /* Teal/Green */
-    --primary-foreground: 210 40% 98%; /* Off-white / Light gray for text on primary */
+
+    --primary: 170 60% 50%;   /* Teal/Green (like focus time button) */
+    --primary-foreground: 20 0% 100%; /* White text on primary */
+
     --secondary: 220 25% 22%; /* Darker shade for secondary elements */
     --secondary-foreground: 210 20% 88%;
-    --muted: 220 25% 18%;    /* Darker muted */
-    --muted-foreground: 210 20% 65%; /* Greyer white */
-    --accent: 170 50% 40%;     /* Darker Teal/Green */
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+
+    --muted: 220 20% 25%;    /* Muted elements, slightly lighter than card */
+    --muted-foreground: 210 20% 65%; /* Greyer white for muted text */
+
+    --accent: 170 50% 40%;     /* Darker Teal/Green for accents */
+    --accent-foreground: 210 40% 98%; /* Text on accent */
+
+    --destructive: 0 70% 50%; /* Brighter red for destructive actions */
     --destructive-foreground: 0 0% 98%;
-    --border: 220 30% 25%;    /* Subtle border */
-    --input: 220 30% 25%;
-    --ring: 170 60% 50%;      /* Teal/Green for rings */
+
+    --border: 220 15% 25%;    /* Subtle border, slightly lighter than card */
+    --input: 220 15% 22%;     /* Input background, similar to card but distinct */
+    
+    --ring: 170 60% 55%;      /* Teal/Green for rings, slightly brighter for visibility */
+
     --chart-1: 170 70% 50%;
     --chart-2: 190 60% 45%;
     --chart-3: 210 80% 55%;
     --chart-4: 150 65% 60%;
     --chart-5: 180 75% 55%;
-    --sidebar-background: 220 30% 8%; /* Even darker for dedicated sidebars like study nav */
-    --sidebar-foreground: 210 20% 93%;
-    --sidebar-primary: 170 60% 50%;
+
+    /* Sidebar specific theme, can be same as card if consistent */
+    --sidebar-background: 30 10% 15%; /* Dark Brownish tone for sidebars */
+    --sidebar-foreground: 30 10% 75%; /* Light grayish brown for text */
+    --sidebar-primary: 170 60% 50%; /* Teal/Green */
     --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 170 50% 40%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 220 30% 20%;
+    --sidebar-accent: 30 10% 22%; /* Slightly lighter brown for hover */
+    --sidebar-accent-foreground: 30 10% 85%;
+    --sidebar-border: 30 10% 20%;
     --sidebar-ring: 170 60% 50%;
   }
 }

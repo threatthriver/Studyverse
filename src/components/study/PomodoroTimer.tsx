@@ -1,27 +1,27 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { BellRing, Play, Pause, RotateCcw, Coffee, Brain } from "lucide-react";
+import { Progress } from "@/components/ui/progress"; // Keep progress for potential future use, but not directly visible in new design
+import { BellRing, Play, Pause, RotateCcw, Coffee, Brain, ChevronDown, Settings2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const WORK_DURATION = 25 * 60; // 25 minutes
-const BREAK_DURATION = 5 * 60; // 5 minutes
+const WORK_DURATION = 7 * 60 + 57; // From image: 07:57
+const BREAK_DURATION = 5 * 60; // 5 minutes (default)
 
 type TimerMode = "work" | "break";
 
 export default function PomodoroTimer() {
   const [timeLeft, setTimeLeft] = useState(WORK_DURATION);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true); // Timer starts active in new design
   const [mode, setMode] = useState<TimerMode>("work");
   const { toast } = useToast();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Request notification permission on mount
     if (Notification.permission !== "granted" && Notification.permission !== "denied") {
       Notification.requestPermission();
     }
@@ -35,6 +35,7 @@ export default function PomodoroTimer() {
 
   const handleTimerEnd = useCallback(() => {
     setIsActive(false);
+    // Streak logic (can be kept if desired)
     if (typeof window !== "undefined" && window.localStorage) {
       const currentStreak = parseInt(localStorage.getItem("studyStreak") || "0");
       if (mode === "work") {
@@ -43,36 +44,34 @@ export default function PomodoroTimer() {
       }
     }
 
-    const notificationTitle = mode === "work" ? "Work session complete!" : "Break's over!";
-    const notificationBody = mode === "work" ? "Time for a break. You earned it!" : "Ready to focus again?";
+    const notificationTitle = mode === "work" ? "Focus session complete!" : "Break's over!";
+    const notificationBody = mode === "work" ? "Time for a break!" : "Back to focus!";
     
     if (mounted && Notification.permission === "granted") {
       try {
-        new Notification(notificationTitle, { body: notificationBody, icon: "/favicon.ico" }); // Assuming you have a favicon
+        new Notification(notificationTitle, { body: notificationBody, icon: "/favicon.ico" });
       } catch (e) {
         console.error("Error showing notification:", e);
-         // Fallback for environments where new Notification might fail (e.g. if service worker not set up for it)
         alert(`${notificationTitle}\n${notificationBody}`);
       }
     }
 
-
     if (mode === "work") {
       toast({
         title: notificationTitle,
-        description: "Time for a well-deserved break. Stretch it out!",
-        action: <Button variant="ghost" size="sm" onClick={() => { setMode("break"); setTimeLeft(BREAK_DURATION); setIsActive(true); }}><Coffee className="mr-2 h-4 w-4" /> Start Break</Button>,
+        description: "Switching to break time.",
       });
       setMode("break");
       setTimeLeft(BREAK_DURATION);
+      // setIsActive(true); // Optionally auto-start break
     } else {
       toast({
         title: notificationTitle,
-        description: "Ready to get back to it? You got this!",
-        action: <Button variant="ghost" size="sm" onClick={() => { setMode("work"); setTimeLeft(WORK_DURATION); setIsActive(true); }}><Brain className="mr-2 h-4 w-4" /> Start Work</Button>,
+        description: "Switching to focus time.",
       });
       setMode("work");
       setTimeLeft(WORK_DURATION);
+      // setIsActive(true); // Optionally auto-start work
     }
   }, [mode, toast, mounted]);
 
@@ -100,21 +99,32 @@ export default function PomodoroTimer() {
     setMode("work");
     setTimeLeft(WORK_DURATION);
   };
+  
+  const selectMode = (newMode: TimerMode) => {
+    setMode(newMode);
+    setIsActive(false); // Pause timer when switching modes manually
+    if (newMode === 'work') {
+      setTimeLeft(WORK_DURATION);
+    } else {
+      setTimeLeft(BREAK_DURATION);
+    }
+  }
 
-  const progress = ((mode === "work" ? WORK_DURATION : BREAK_DURATION) - timeLeft) / (mode === "work" ? WORK_DURATION : BREAK_DURATION) * 100;
+  // Progress not directly shown in new UI, but calculated for potential internal use
+  // const progress = ((mode === "work" ? WORK_DURATION : BREAK_DURATION) - timeLeft) / (mode === "work" ? WORK_DURATION : BREAK_DURATION) * 100;
 
   if (!mounted) {
+    // Simplified loading state
     return (
       <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
-        <CardHeader className="p-3">
-          <CardTitle className="text-base font-semibold text-primary">Focus Timer</CardTitle>
+        <CardHeader className="p-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-sm font-semibold text-primary flex items-center">Group timer <ChevronDown className="ml-1 h-4 w-4 opacity-70" /></CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-col items-center space-y-3 p-3">
-          <div className="text-4xl font-mono font-bold text-foreground">--:--</div>
-           <Progress value={0} className="w-full h-2" />
+        <CardContent className="flex flex-col items-center space-y-2 p-3">
+          <div className="text-5xl font-mono font-bold text-foreground">--:--</div>
           <div className="flex items-center justify-center space-x-2 w-full">
-            <Button size="sm" className="flex-1" disabled><Play className="mr-1.5 h-4 w-4" />Start</Button>
-            <Button variant="outline" size="sm" className="flex-1" disabled><RotateCcw className="mr-1.5 h-4 w-4" />Reset</Button>
+            <Button size="sm" variant="ghost" className="flex-1 text-xs h-7" disabled>Focus time</Button>
+            <Button size="sm" variant="ghost" className="flex-1 text-xs h-7" disabled>Break time</Button>
           </div>
         </CardContent>
       </Card>
@@ -123,27 +133,49 @@ export default function PomodoroTimer() {
 
   return (
     <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
-      <CardHeader className="p-3">
-        <CardTitle className="text-base font-semibold text-primary">Focus Timer</CardTitle>
+      <CardHeader className="p-3 flex flex-row items-center justify-between">
+        <CardTitle className="text-sm font-semibold text-primary flex items-center cursor-pointer hover:opacity-80">
+            Group timer <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+        </CardTitle>
+        {/* Placeholder for dropdown content or actions */}
       </CardHeader>
-      <CardContent className="flex flex-col items-center space-y-3 p-3">
-        <div className={`text-4xl font-mono font-bold ${mode === 'work' ? 'text-foreground' : 'text-accent-foreground'}`}>
-          {formatTime(timeLeft)}
+      <CardContent className="flex flex-col items-center space-y-2 p-3">
+        <div className="flex items-center gap-2">
+            <div className={`text-5xl font-mono font-bold ${mode === 'work' ? 'text-foreground' : 'text-accent-foreground'}`}>
+            {formatTime(timeLeft)}
+            </div>
+            <div className="flex flex-col gap-1">
+                 <Button onClick={toggleTimer} variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground">
+                    {isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                    <span className="sr-only">{isActive ? "Pause" : "Start"}</span>
+                </Button>
+                <Button onClick={resetTimer} variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground">
+                    <Settings2 className="h-4 w-4" /> {/* Using Settings2 for timer options */}
+                    <span className="sr-only">Reset/Settings</span>
+                </Button>
+            </div>
         </div>
-        <Progress value={progress} className="w-full h-2 bg-secondary/50" />
-        <div className="flex items-center justify-center space-x-2 w-full">
-          <Button onClick={toggleTimer} size="sm" className="flex-1 shadow-md hover:shadow-lg transition-shadow">
-            {isActive ? <Pause className="mr-1.5 h-4 w-4" /> : <Play className="mr-1.5 h-4 w-4" />}
-            {isActive ? "Pause" : "Start"}
+        
+        {/* <Progress value={progress} className="w-full h-1.5 bg-secondary/50" /> */}
+        
+        <div className="flex items-center justify-center space-x-1 w-full">
+          <Button 
+            onClick={() => selectMode("work")} 
+            variant={mode === 'work' ? "default" : "ghost"} 
+            size="sm" 
+            className={`flex-1 text-xs h-7 shadow-sm ${mode === 'work' ? 'bg-green-600 hover:bg-green-700 text-white' : 'text-muted-foreground'}`}
+          >
+            <Brain className={`mr-1.5 h-3.5 w-3.5 ${mode === 'work' ? '' : 'opacity-50'}`} /> Focus time
           </Button>
-          <Button onClick={resetTimer} variant="outline" size="sm" className="flex-1 shadow-md hover:shadow-lg transition-shadow">
-            <RotateCcw className="mr-1.5 h-4 w-4" />
-            Reset
+          <Button 
+            onClick={() => selectMode("break")} 
+            variant={mode === 'break' ? "default" : "ghost"} 
+            size="sm" 
+            className={`flex-1 text-xs h-7 shadow-sm ${mode === 'break' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'text-muted-foreground'}`}
+          >
+            <Coffee className={`mr-1.5 h-3.5 w-3.5 ${mode === 'break' ? '' : 'opacity-50'}`} /> Break time
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Mode: <span className={`font-medium ${mode === 'work' ? 'text-foreground' : 'text-accent-foreground'}`}>{mode === "work" ? "Focus" : "Break"}</span>
-        </p>
       </CardContent>
     </Card>
   );

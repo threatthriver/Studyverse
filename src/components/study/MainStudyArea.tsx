@@ -1,20 +1,21 @@
+
 import Image from "next/image";
 
 export default function MainStudyArea() {
   return (
     <div className="flex-grow relative overflow-hidden">
       <Image
-        src="https://placehold.co/1920x1080/1A202C/4A5568.png?text=Lofi+Cityscape" // Placeholder, ideally dynamic
-        alt="Study environment background"
+        src="https://placehold.co/1920x1080/D6C9BE/4A3F35.png?text=Study+Desk+Notes" // Placeholder for study desk
+        alt="Study environment background - a desk with notes and a laptop"
         layout="fill"
         objectFit="cover"
-        data-ai-hint="lofi cityscape anime"
+        data-ai-hint="study desk notes"
         priority
-        className="opacity-80" // Slight opacity to allow UI elements to pop
+        className="opacity-90" 
       />
-      {/* You can add overlays or other elements on top of the background here if needed */}
-      {/* For example, a subtle vignette effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/10 via-transparent to-black/20 pointer-events-none"></div>
+      {/* Vignette or overlay for better text readability on top if needed */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/5 via-transparent to-black/15 pointer-events-none"></div>
+      {/* RoomTitleBar and MediaControlsBar will be placed by the parent layout */}
     </div>
   );
 }

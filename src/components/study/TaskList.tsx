@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { PlusCircle, Trash2, ChevronDown } from "lucide-react";
 
 interface Task {
   id: string;
@@ -15,15 +16,18 @@ interface Task {
 }
 
 export default function TaskList() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([
+    { id: "1", text: "SDFS", completed: false },
+    { id: "2", text: "Part1", completed: true },
+    { id: "3", text: "Part2 Gr", completed: false },
+  ]);
   const [newTaskText, setNewTaskText] = useState("");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Load tasks from local storage
     if (typeof window !== "undefined") {
-      const savedTasks = localStorage.getItem("studyTasks");
+      const savedTasks = localStorage.getItem("studyTasksNew"); // Use new key to avoid conflicts
       if (savedTasks) {
         setTasks(JSON.parse(savedTasks));
       }
@@ -32,7 +36,7 @@ export default function TaskList() {
 
   useEffect(() => {
     if (mounted && typeof window !== "undefined") {
-      localStorage.setItem("studyTasks", JSON.stringify(tasks));
+      localStorage.setItem("studyTasksNew", JSON.stringify(tasks));
     }
   }, [tasks, mounted]);
 
@@ -60,11 +64,15 @@ export default function TaskList() {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
+  const completedTasksCount = tasks.filter(task => task.completed).length;
+  const totalTasksCount = tasks.length;
+
   if (!mounted) {
      return (
       <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
-        <CardHeader className="p-3">
-          <CardTitle className="text-base font-semibold text-primary">My Tasks</CardTitle>
+        <CardHeader className="p-3 flex flex-row items-center justify-between">
+          <CardTitle className="text-sm font-semibold text-primary flex items-center">My tasks <ChevronDown className="ml-1 h-4 w-4 opacity-70" /></CardTitle>
+           <span className="text-xs text-muted-foreground">--/--</span>
         </CardHeader>
         <CardContent className="p-3 space-y-2">
           <div className="text-sm text-muted-foreground h-24 text-center pt-8">Loading tasks...</div>
@@ -75,45 +83,35 @@ export default function TaskList() {
 
   return (
     <Card className="bg-card/80 backdrop-blur-sm shadow-lg flex flex-col max-h-[300px]">
-      <CardHeader className="p-3">
-        <CardTitle className="text-base font-semibold text-primary">My Tasks</CardTitle>
+      <CardHeader className="p-3 flex flex-row items-center justify-between">
+        <CardTitle className="text-sm font-semibold text-primary flex items-center cursor-pointer hover:opacity-80">
+            My tasks <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
+        </CardTitle>
+        <span className="text-xs text-muted-foreground">{completedTasksCount}/{totalTasksCount}</span>
       </CardHeader>
       <CardContent className="p-3 space-y-2 flex-grow overflow-hidden flex flex-col">
-        <form onSubmit={handleAddTask} className="flex items-center gap-2">
-          <Input
-            type="text"
-            value={newTaskText}
-            onChange={(e) => setNewTaskText(e.target.value)}
-            placeholder="Add new task..."
-            className="flex-grow bg-input/50 text-sm h-9"
-            aria-label="New task input"
-          />
-          <Button type="submit" size="icon" className="h-9 w-9 shrink-0">
-            <PlusCircle className="h-4 w-4" />
-             <span className="sr-only">Add Task</span>
-          </Button>
-        </form>
-        <ScrollArea className="flex-grow">
+        <ScrollArea className="flex-grow pr-1">
           {tasks.length === 0 && (
             <p className="text-xs text-muted-foreground text-center py-4">No tasks yet. Add some!</p>
           )}
-          <ul className="space-y-1.5 pr-1">
+          <ul className="space-y-1.5">
             {tasks.map((task) => (
               <li
                 key={task.id}
-                className="flex items-center gap-2 p-1.5 bg-background/30 rounded-md text-sm"
+                className="flex items-center gap-2 p-1.5 bg-background/30 rounded-md text-sm hover:bg-accent/10"
               >
                 <Checkbox
                   id={`task-${task.id}`}
                   checked={task.completed}
                   onCheckedChange={() => toggleTaskCompletion(task.id)}
                   aria-labelledby={`task-label-${task.id}`}
+                  className="border-primary/50 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-600"
                 />
                 <label
                   htmlFor={`task-${task.id}`}
                   id={`task-label-${task.id}`}
                   className={`flex-grow cursor-pointer ${
-                    task.completed ? "line-through text-muted-foreground" : "text-foreground"
+                    task.completed ? "line-through text-muted-foreground/70" : "text-foreground"
                   }`}
                 >
                   {task.text}
@@ -122,7 +120,7 @@ export default function TaskList() {
                   variant="ghost"
                   size="icon"
                   onClick={() => handleDeleteTask(task.id)}
-                  className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                  className="h-6 w-6 text-muted-foreground hover:text-destructive opacity-50 hover:opacity-100"
                   aria-label={`Delete task: ${task.text}`}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -131,6 +129,20 @@ export default function TaskList() {
             ))}
           </ul>
         </ScrollArea>
+         <form onSubmit={handleAddTask} className="flex items-center gap-2 pt-2 border-t border-border/20 mt-1">
+          <Button type="submit" variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+            <PlusCircle className="h-4 w-4 mr-1.5" /> Add new task
+          </Button>
+          <Input
+            type="text"
+            value={newTaskText}
+            onChange={(e) => setNewTaskText(e.target.value)}
+            placeholder="Type and press Enter or click Add"
+            className="flex-grow bg-input/50 text-sm h-8"
+            aria-label="New task input"
+            onKeyDown={(e) => { if(e.key === 'Enter') handleAddTask(e);}}
+          />
+        </form>
       </CardContent>
     </Card>
   );
