@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Library, Coffee, Wind, Waves, Volume2, VolumeX, Sun, Moon } from "lucide-react";
+import { Library, Coffee, Wind, Waves, Volume2, VolumeX, Sun, Moon, Users as LucideUsers, MessageSquare as LucideMessageSquare, CloudRain as LucideCloudRain, BookOpenCheck as LucideBookOpenCheck } from "lucide-react";
 
 type Theme = "library" | "cafe" | "minimalist" | "custom";
 interface ThemeOption {
@@ -28,6 +28,13 @@ interface SoundOption {
   icon: React.ReactNode;
   // file: string; // Path to sound file, for future implementation
 }
+
+// Dummy icons for sounds - moved before themes definition
+const BookOpenCheck = LucideBookOpenCheck; 
+const Users = LucideUsers; 
+const MessageSquare = LucideMessageSquare;
+const CloudRain = LucideCloudRain;
+
 
 const themes: ThemeOption[] = [
   {
@@ -64,12 +71,6 @@ const themes: ThemeOption[] = [
     ],
   },
 ];
-
-// Dummy icons for sounds not in lucide-react
-const BookOpenCheck = Library; 
-const Users = Coffee; 
-const MessageSquare = Wind;
-const CloudRain = Waves;
 
 
 export default function StudyRoomControls() {
