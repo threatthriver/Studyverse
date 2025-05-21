@@ -5,26 +5,38 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%; /* More teal/greenish for dark theme accent */
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%; /* Accent color for rings */
-    --radius: 0.5rem;
+    /* Material Design 3 Light Theme */
+    --background: 0 0% 98%; /* M3 Background */
+    --foreground: 0 0% 10%; /* M3 On Background */
+
+    --primary: 230 70% 50%; /* M3 Primary */
+    --primary-foreground: 0 0% 100%; /* M3 On Primary */
+
+    --secondary: 190 70% 45%; /* M3 Secondary */
+    --secondary-foreground: 0 0% 100%; /* M3 On Secondary */
+
+    --accent: 30 90% 50%; /* M3 Tertiary */
+    --accent-foreground: 0 0% 0%; /* M3 On Tertiary */
+    
+    --destructive: 0 85% 60%; /* M3 Error */
+    --destructive-foreground: 0 0% 100%; /* M3 On Error */
+
+    --card: 0 0% 94%; /* M3 Surface Variant */
+    --card-foreground: 0 0% 20%; /* M3 On Surface Variant */
+
+    --popover: 0 0% 94%; /* M3 Surface Variant */
+    --popover-foreground: 0 0% 20%; /* M3 On Surface Variant */
+
+    --border: 0 0% 70%; /* M3 Outline */
+    --input: 0 0% 94%; /* M3 Surface Variant (for input fill) */
+    --ring: 230 70% 50%; /* M3 Primary (for focus ring) */
+
+    --muted: 0 0% 90%; /* Custom Muted (slightly darker than Surface Variant) */
+    --muted-foreground: 0 0% 40%; /* Custom Muted Foreground */
+    
+    --radius: 0.25rem; /* Updated radius */
+
+    /* Chart colors remain unchanged for now */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -43,36 +55,36 @@
   }
 
   .dark {
-    --background: 220 30% 10%; /* Deep Blue-Black for main app background */
-    --foreground: 210 20% 95%; /* Off-white for text */
+    /* Material Design 3 Dark Theme */
+    --background: 0 0% 6%; /* M3 Background */
+    --foreground: 0 0% 92%; /* M3 On Background */
+
+    --primary: 230 60% 75%; /* M3 Primary */
+    --primary-foreground: 230 90% 15%; /* M3 On Primary */
+
+    --secondary: 190 60% 70%; /* M3 Secondary */
+    --secondary-foreground: 190 90% 15%; /* M3 On Secondary */
+
+    --accent: 30 70% 70%; /* M3 Tertiary */
+    --accent-foreground: 30 90% 15%; /* M3 On Tertiary */
+
+    --destructive: 0 70% 70%; /* M3 Error */
+    --destructive-foreground: 0 90% 15%; /* M3 On Error */
+
+    --card: 0 0% 15%; /* M3 Surface Variant */
+    --card-foreground: 0 0% 80%; /* M3 On Surface Variant */
+
+    --popover: 0 0% 15%; /* M3 Surface Variant */
+    --popover-foreground: 0 0% 80%; /* M3 On Surface Variant */
+
+    --border: 0 0% 45%; /* M3 Outline */
+    --input: 0 0% 15%; /* M3 Surface Variant (for input fill) */
+    --ring: 230 60% 75%; /* M3 Primary (for focus ring) */
+
+    --muted: 0 0% 20%; /* Custom Muted (slightly lighter than Surface Variant) */
+    --muted-foreground: 0 0% 60%; /* Custom Muted Foreground */
     
-    /* Cards in sidebars and control bars - slightly lighter than main, with a hint of brown/desaturated color */
-    --card: 220 15% 18%; /* Dark, desaturated blue-grey, leaning towards brown */
-    --card-foreground: 210 20% 90%;
-
-    --popover: 220 15% 15%; /* Darker popovers */
-    --popover-foreground: 210 20% 95%;
-
-    --primary: 170 60% 50%;   /* Teal/Green (like focus time button) */
-    --primary-foreground: 20 0% 100%; /* White text on primary */
-
-    --secondary: 220 25% 22%; /* Darker shade for secondary elements */
-    --secondary-foreground: 210 20% 88%;
-
-    --muted: 220 20% 25%;    /* Muted elements, slightly lighter than card */
-    --muted-foreground: 210 20% 65%; /* Greyer white for muted text */
-
-    --accent: 170 50% 40%;     /* Darker Teal/Green for accents */
-    --accent-foreground: 210 40% 98%; /* Text on accent */
-
-    --destructive: 0 70% 50%; /* Brighter red for destructive actions */
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 220 15% 25%;    /* Subtle border, slightly lighter than card */
-    --input: 220 15% 22%;     /* Input background, similar to card but distinct */
-    
-    --ring: 170 60% 55%;      /* Teal/Green for rings, slightly brighter for visibility */
-
+    /* Chart colors remain unchanged for now */
     --chart-1: 170 70% 50%;
     --chart-2: 190 60% 45%;
     --chart-3: 210 80% 55%;
@@ -92,9 +104,6 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
